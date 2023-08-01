@@ -151,7 +151,8 @@ alias ga='git add .; gs'
 alias gc='git commit -m'
 
 ## the most simple and common pipeline
-alias gam='git commit -a --amend; git push -f; git status'
+alias gup='git add .; git commit -m "update"; git push -f; git status'
+alias gam='git add .; git commit --amend; git push -f; git status'
 
 # aliases for nvidia-smi
 alias ns='nvidia-smi'

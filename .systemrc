@@ -1,8 +1,8 @@
 # system-dependent configs
 export DATA_ROOT='/data/tongyx361'
 
-PROXY_PORT='7890'
-DEFAULT_CONDA_ENV='base'
+PROXY_PORT='6103'
+DEFAULT_CONDA_ENV='nlp'
 
 ##########################################################
 
