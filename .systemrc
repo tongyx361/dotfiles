@@ -1,0 +1,43 @@
+# system-dependent configs
+export DATA_ROOT='/data/tongyx361'
+
+PROXY_PORT='7890'
+DEFAULT_CONDA_ENV='base'
+
+##########################################################
+
+cd "${DATA_ROOT}"
+
+# dotfiles
+
+DOTFILES_REPO_DIR="${DATA_ROOT}/dotfiles"
+
+# Check if the ${DOTFILES_REPO_DIR} folder exists
+if [ ! -d "${DOTFILES_REPO_DIR}" ]; then
+  echo "[WARNING] Folder ${DOTFILES_REPO_DIR} not found."
+  git clone https://github.com/tongyx361/dotfiles.git
+
+  if [ $? -eq 0 ]; then
+    echo "[INFO] Cloning succeeded！"
+  else
+    echo "[ERROR] Cloning failed, check network or permission settings."
+    exit 1
+  fi
+else
+  echo "[INFO] ${DOTFILES_REPO_DIR} existed."
+fi
+
+# source other dotfiles
+
+cd "${DOTFILES_REPO_DIR}"
+cd dotfiles
+
+# echo "[DEBUG] Sourcing dotfiles..."
+for file in .*rc; do
+  if [ -f "$file" ]; then
+    echo "[INFO] Running $file..."
+    source "$file"
+  fi
+done
+
+cd "${DATA_ROOT}"

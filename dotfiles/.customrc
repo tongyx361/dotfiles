@@ -1,0 +1,179 @@
+# custom
+export IS_EXECUTING_ZSHRC=1
+
+##########################################################
+
+# basic functions
+
+function cf() {
+    ls $1 | wc -l
+}
+
+# system proxy
+if grep -q WSL /proc/version; then
+    PROXY_IP=$(cat /etc/resolv.conf |grep "nameserver" |cut -f 2 -d " ")
+else
+    PROXY_IP='127.0.0.1'
+fi
+
+function sp() {
+    # set_proxy()
+    # IP
+    if [ -z $1 ]; then
+        IP="${PROXY_IP}"
+    else
+        IP="$1"
+    fi
+
+    # Port
+    if [ -z $2 ]; then
+        PORT="${PROXY_PORT}"
+    else
+        PORT="$2"
+    fi
+
+    export http_proxy="http://${IP}:${PORT}"
+    export https_proxy="http://${IP}:${PORT}"
+    export all_proxy="socks5://${IP}:${PORT}"
+
+    # 若不在 .zshrc 中执行，则输出 proxy 信息
+    if [ ! "${IS_EXECUTING_ZSHRC}" ] && [ ! -z "$(env | grep proxy)" ]; then
+        env | grep proxy
+    fi
+}
+
+function up() {
+    unset http_proxy
+    unset https_proxy
+    unset all_proxy
+
+    # # for fish
+    # set -x http_proxy
+    # set -x https_proxy
+    # set -x all_proxy
+
+    # 若不在 .zshrc 中执行，则输出提示信息
+    if [ ! "${IS_EXECUTING_ZSHRC}" ] && [ -z "$(env | grep proxy)" ]; then
+        echo 'Proxies unseted!'
+    fi
+}
+
+if [ "${PROXY_PORT}" ]; then
+    sp
+fi
+
+# aliases for wget
+
+alias wnc='wget --no-check-certificate'
+
+# aliases for ps
+
+alias pp='ps -fl -p'
+alias pg='ps -aux | grep'
+
+# aliases for watch
+
+alias wn='watch -n 1 -dc "nvidia-smi"'
+alias wf='watch -n 1 -dc "free -ht"'
+
+# aliases for rm
+
+alias rmcache='rm -rf ~/.cache'
+
+##########################################################
+
+# alias for nvidia-smi
+
+alias nsc='nvidia-smi --query-compute-apps=pid,gpu_bus_id,process_name,used_gpu_memory --format=csv'
+alias psnsc='ps -fl -p $(nvidia-smi --query-compute-apps=pid --format=csv,noheader)'
+
+# functions for nvidia-smi
+
+function nsci() {
+    nvidia-smi --query-compute-apps=pid,gpu_bus_id,process_name,used_gpu_memory --format=csv -i "$1"
+}
+
+function psnsci() {
+    ps -fl -p $(nvidia-smi --query-compute-apps=pid --format=csv,noheader -i "$1")
+}
+
+##########################################################
+
+# environment variables for HuggingFace
+
+export HF_HOME="${DATA_ROOT}/.cache/huggingface"
+
+##########################################################
+
+# environment variables for pip(3)
+
+# 检查 ~/.pip 目录是否存在
+if [ ! -d "$HOME/.pip" ]; then
+    # 如果不存在则创建目录
+    mkdir "$HOME/.pip"
+fi
+
+# 检查 pip 配置文件是否存在
+if [ ! -f "$HOME/.pip/pip.conf" ]; then
+    # 如果不存在则创建文件
+    touch "$HOME/.pip/pip.conf"
+fi
+
+# 检查配置文件中是否包含 cache-dir 配置项
+if ! grep -q "^cache-dir" "$HOME/.pip/pip.conf" 2>/dev/null; then
+    # 如果不存在则添加配置项
+    echo "[global]" >> "$HOME/.pip/pip.conf"
+    echo "cache-dir = /path/to/new/cache/directory" >> "$HOME/.pip/pip.conf"
+fi
+
+# 替换 /path/to/new/cache/directory 为实际的缓存目录路径
+sed -i 's#/path/to/new/cache/directory#'"$DATA_ROOT/.cache/pip"'#g' "$HOME/.pip/pip.conf"
+
+# aliases for pip(3)
+
+alias pi='pip install'
+
+# functions for pip(3)
+
+function pypi() {
+    sp
+    pip install "${1}" --index-url https://pypi.org/simple/
+}
+
+##########################################################
+
+# git config
+git config --global alias.lol "log --graph --oneline --decorate --color --all"
+
+# aliases for Git
+alias gs='git status'
+alias ga='git add .; gs'
+alias gc='git commit -m'
+
+## the most simple and common pipeline
+alias gam='git commit -a --amend; git push -f; git status'
+
+# aliases for nvidia-smi
+alias ns='nvidia-smi'
+alias nsp='nvidia-smi pmon -c 1 -s um'
+
+# aliases and functions for Conda
+function ca() {
+    conda activate $1
+    ceiling="===== Conda Env: $1 ====="
+    echo "$ceiling"
+    python_path=$(which python)
+    echo "$python_path"
+    python --version
+
+    if [[ $python_path == *"$string2"* ]]; then
+        echo "===== YES!! It's $1 ====="
+    else
+        echo "===== NO!! Retry $1 ====="
+        ca $1
+    fi
+}
+
+unset IS_EXECUTING_ZSHRC
+
+ca "${DEFAULT_CONDA_ENV}"
