@@ -163,9 +163,13 @@ function gam(){
     fi
 }
 
+##########################################################
+
 # aliases for nvidia-smi
 alias ns='nvidia-smi'
 alias nsp='nvidia-smi pmon -c 1 -s um'
+
+##########################################################
 
 # aliases and functions for Conda
 function ca() {
@@ -183,6 +187,12 @@ function ca() {
         ca $1
     fi
 }
+
+##########################################################
+
+export WANDB_NETRC_PATH="${DATA_ROOT}/.netrc"
+
+##########################################################
 
 unset IS_EXECUTING_ZSHRC
 
