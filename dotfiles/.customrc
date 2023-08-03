@@ -190,7 +190,11 @@ function ca() {
 
 ##########################################################
 
-export WANDB_NETRC_PATH="${DATA_ROOT}/.netrc"
+# environment variables for wandb
+
+export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
+export WANDB_CONFIG_DIR="${DATA_ROOT}/.config/wandb"
+export WANDB_DIR="${DATA_ROOT}/wandb"
 
 ##########################################################
 
