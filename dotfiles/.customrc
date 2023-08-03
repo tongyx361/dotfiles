@@ -151,7 +151,7 @@ git config --global pull.rebase false
 alias gs='git status'
 alias ga='git add .; git status'
 alias gc='git commit -m'
-alias gp='git pull; git status'
+alias gp="git add .; git commit --message 'to merge' --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git status"
 
 ## the most simple and common pipeline
 alias gup="git add .; git commit --message 'update' --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git push; git status"
