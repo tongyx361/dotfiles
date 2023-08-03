@@ -153,12 +153,12 @@ alias gc='git commit -m'
 alias gp='git pull.rebase false; git status'
 
 ## the most simple and common pipeline
-alias gup="git add .; git commit --message 'update' --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git push -f; git status"
+alias gup="git add .; git commit --message 'update' --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git push; git status"
 function gam(){
     if [ -z "$1" ]; then
         git add .; git commit --amend --author="${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>"; git push -f; git status
     else
-        git add .; git commit --amend --message "$1" --author="${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>"; git push -f; git status
+        git add .; git commit --amend --message "$1" --author="${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>"; git push; git status
     fi
 }
 
