@@ -147,12 +147,13 @@ git config --global alias.lol "log --graph --oneline --decorate --color --all"
 
 # aliases for Git
 alias gs='git status'
-alias ga='git add .; gs'
+alias ga='git add .; git status'
 alias gc='git commit -m'
+alias gp='git pull.rebase false; git status'
 
 ## the most simple and common pipeline
-alias gup='git add .; git commit -m "update"; git push -f; git status'
-alias gam='git add .; git commit --amend; git push -f; git status'
+alias gup="git add .; git commit -m --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git push -f; git status"
+alias gam="git add .; git commit --amend --author=\"${GIT_AUTHOR_NAME} <${GIT_AUTHOR_EMAIL}>\"; git push -f; git status"
 
 # aliases for nvidia-smi
 alias ns='nvidia-smi'
