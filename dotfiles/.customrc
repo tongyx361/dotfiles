@@ -176,7 +176,7 @@ function ca() {
     echo "$python_path"
     python --version
 
-    if [[ $python_path == *"$string2"* ]]; then
+    if [[ $python_path == *"$1"* ]]; then
         echo "===== YES!! It's $1 ====="
     else
         echo "===== NO!! Retry $1 ====="
