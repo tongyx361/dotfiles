@@ -6,7 +6,7 @@
 export DATA_ROOT='/data/tongyx361'
 DEFAULT_CONDA_ENV='nlp'
 
-# user-dependent configs
+# user-consistent configs
 
 export GIT_AUTHOR_NAME="Shawn Yuxuan Tong"
 export GIT_AUTHOR_EMAIL="tongyuxuan361@gmail.com"
