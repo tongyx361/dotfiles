@@ -165,6 +165,18 @@ function gam(){
 
 ##########################################################
 
+# aliases for CUDA
+
+# functions for CUDA
+
+function cvdc(){
+    command="CUDA_VISIBLE_DEVICES=$1  $2"
+    echo "${command}"
+    eval "${command}"
+}
+
+##########################################################
+
 # aliases for nvidia-smi
 alias ns='nvidia-smi'
 alias nsp='nvidia-smi pmon -c 1 -s um'
@@ -190,7 +202,11 @@ function ca() {
 
 ##########################################################
 
+# environment variables for wandb
+
 export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
+export WANDB_CONFIG_DIR="${DATA_ROOT}/.config/wandb"
+export WANDB_DIR="${DATA_ROOT}/wandb"
 
 ##########################################################
 
