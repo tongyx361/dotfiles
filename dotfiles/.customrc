@@ -80,12 +80,18 @@ alias wf='watch -n 1 -dc "free -ht"'
 
 alias rmcache='rm -rf ~/.cache'
 
+# aliases for jobs
+
+alias k1='kill -9 %1'
+alias d1='disown %1'
+
 ##########################################################
 
 # alias for nvidia-smi
 
-alias nsc='nvidia-smi --query-compute-apps=pid,gpu_bus_id,process_name,used_gpu_memory --format=csv'
-alias psnsc='ps -fl -p $(nvidia-smi --query-compute-apps=pid --format=csv,noheader)'
+alias nscsv='nvidia-smi --query-compute-apps=pid,gpu_bus_id,process_name,used_gpu_memory --format=csv'
+alias nspnh='nvidia-smi --query-compute-apps=pid --format=csv,noheader'
+alias psnsp='ps -fl -p $(nvidia-smi --query-compute-apps=pid --format=csv,noheader)'
 
 # functions for nvidia-smi
 
@@ -207,6 +213,14 @@ function ca() {
 export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
 export WANDB_CONFIG_DIR="${DATA_ROOT}/.config/wandb"
 export WANDB_DIR="${DATA_ROOT}/wandb"
+
+# alias for wandb
+
+alias wsl="wandb sync $WANDB_DIR/wandb/latest-run"
+
+# function ws(){
+
+# }
 
 ##########################################################
 
