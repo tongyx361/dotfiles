@@ -1,5 +1,14 @@
 # custom
-export IS_EXECUTING_ZSHRC=1
+IS_EXECUTING_ZSHRC=1
+
+##########################################################
+
+# global variables
+
+DEFAULT_CONFIG_DIRPATH="${DATA_ROOT}/dotfiles/.config"
+
+WORK_REPO="reward-by-prm800k"
+WORK_ROOT="${DATA_ROOT}/${WORK_REPO}"
 
 ##########################################################
 
@@ -62,6 +71,24 @@ if [ "${PROXY_PORT}" ]; then
     sp
 fi
 
+# # config
+
+function activate_config() {
+    # $1: default config file name
+    # $2: user config path
+
+    DEFAULT_CONFIG_PATH="${DEFAULT_CONFIG_DIRPATH}/$1"
+
+    if [ -f "$2" ]; then
+        rm "$2"
+    fi
+    ln -s "${DEFAULT_CONFIG_PATH}" "$2"
+}
+
+
+##########################################################
+
+
 # aliases for wget
 
 alias wnc='wget --no-check-certificate'
@@ -84,6 +111,30 @@ alias rmcache='rm -rf ~/.cache'
 
 alias k1='kill -9 %1'
 alias d1='disown %1'
+
+##########################################################
+
+# flake8
+
+# # config
+
+FLAKE8_CONFIG_FILENAME=".flake8"
+
+activate_config "${FLAKE8_CONFIG_FILENAME}" "${DATA_ROOT}/${FLAKE8_CONFIG_FILENAME}"
+
+##########################################################
+
+# black
+
+# # config
+
+BLACK_CONFIG_FILENAME="black"
+
+BLACK_USER_CONFIG_PATH="${HOME}/.config/${BLACK_CONFIG_FILENAME}"
+
+activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
+
+activate_config "${BLACK_CONFIG_FILENAME}" "${WORK_ROOT}/pyproject.toml" # Warning: this will overwrite the original file
 
 ##########################################################
 
