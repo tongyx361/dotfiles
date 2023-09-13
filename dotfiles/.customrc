@@ -82,7 +82,7 @@ function activate_config() {
     if [ -f "$2" ]; then
         rm "$2"
     fi
-    ln -s "${DEFAULT_CONFIG_PATH}" "$2"
+    cp "${DEFAULT_CONFIG_PATH}" "$2"
 }
 
 
