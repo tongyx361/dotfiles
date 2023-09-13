@@ -1,10 +1,10 @@
 # system-dependent configs
 
-export DATA_ROOT='/data/users/zhangjunlei/tyx'
-DEFAULT_CONDA_ENV='open-instruct'
+# export DATA_ROOT='/data/users/zhangjunlei/tyx'
+# DEFAULT_CONDA_ENV='open-instruct'
 
-# export DATA_ROOT='/data/tongyx361'
-# DEFAULT_CONDA_ENV='nlp'
+export DATA_ROOT='/data/tongyx361'
+DEFAULT_CONDA_ENV='nlp'
 
 # user-consistent configs
 
