@@ -7,8 +7,8 @@ IS_EXECUTING_ZSHRC=1
 
 DEFAULT_CONFIG_DIRPATH="${DATA_ROOT}/dotfiles/.config"
 
-WORK_REPO="reward-by-prm800k"
-WORK_ROOT="${DATA_ROOT}/${WORK_REPO}"
+WORK_REPO_NAME="reward-by-prm800k"
+WORK_REPO_PATH="${DATA_ROOT}/${WORK_REPO_NAME}"
 
 ##########################################################
 
@@ -134,7 +134,7 @@ BLACK_USER_CONFIG_PATH="${HOME}/.config/${BLACK_CONFIG_FILENAME}"
 
 activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
 
-activate_config "${BLACK_CONFIG_FILENAME}" "${WORK_ROOT}/pyproject.toml" # Warning: this will overwrite the original file
+activate_config "${BLACK_CONFIG_FILENAME}" "${WORK_REPO_PATH}/pyproject.toml" # Warning: this will overwrite the original file
 
 ##########################################################
 
