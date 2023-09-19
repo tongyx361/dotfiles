@@ -82,7 +82,7 @@ function activate_config() {
     if [ -f "$2" ]; then
         rm "$2"
     fi
-    cp "${DEFAULT_CONFIG_PATH}" "$2"
+    ln "${DEFAULT_CONFIG_PATH}" "$2"
 }
 
 
@@ -111,6 +111,25 @@ alias rmcache='rm -rf ~/.cache'
 
 alias k1='kill -9 %1'
 alias d1='disown %1'
+
+
+##########################################################
+
+# network
+
+alias test-google="curl -I www.google.com"
+
+##########################################################
+
+# clash
+
+alias setup-clash="source ${DATA_ROOT}/clash/clash.sh"
+
+alias clash-logs="nohup curl -X GET '127.0.0.1:7777/logs' &> \"${DATA_ROOT}/clash/logs/test.out\" &"
+
+function select-proxy(){
+    curl -X PUT -H "Content-Type: application/json" -d "{\"name\":\"$1\"}" "127.0.0.1:7777/proxies/一元机场"
+}
 
 ##########################################################
 
@@ -242,20 +261,23 @@ alias nsp='nvidia-smi pmon -c 1 -s um'
 
 # aliases and functions for Conda
 function ca() {
-    conda activate $1
-    ceiling="===== Conda Env: $1 ====="
-    echo "$ceiling"
-    python_path=$(which python)
-    echo "$python_path"
-    python --version
+  conda activate $1
+  ceiling="===== Conda Env: $1 ====="
+  echo "$ceiling"
+  python_path=$(which python)
+  echo "$python_path"
+  python --version
 
-    if [[ $python_path == *"$1"* ]]; then
-        echo "===== YES!! It's $1 ====="
-    else
-        echo "===== NO!! Retry $1 ====="
-        ca $1
-    fi
+  # base
+  if [[ $python_path =~ 'envs' || $python_path =~ $1 ]]; then
+    echo "===== YES!! It's $1 ====="
+  else
+    echo "===== NO!! Retry $1 ====="
+    ca $1
+  fi
 }
+
+alias cr='conda remove --all --yes --name'
 
 ##########################################################
 
