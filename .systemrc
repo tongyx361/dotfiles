@@ -10,7 +10,7 @@ if ! alias "${shortcut}"; then
   systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc"
   alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
   eval "${alias_shortcut_cmd}"
-  echo "${alias_shortcut_cmd}" >> ~/.bashrc
+  echo "\n${alias_shortcut_cmd}\n" >> ~/.bashrc
 fi
 
 # set user-consistent configs
