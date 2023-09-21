@@ -218,6 +218,8 @@ function pypi() {
 
 # git config
 git config --global alias.lol "log --graph --oneline --decorate --color --all"
+git config --global alias.rh "reset --hard"
+
 git config --global core.editor "vim"
 git config --global pull.rebase false
 
