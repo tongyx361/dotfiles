@@ -3,15 +3,6 @@ IS_EXECUTING_ZSHRC=1
 
 ##########################################################
 
-# global variables
-
-DEFAULT_CONFIG_DIRPATH="${DATA_ROOT}/dotfiles/.config"
-
-WORK_REPO_NAME="reward-by-prm800k"
-WORK_REPO_PATH="${DATA_ROOT}/${WORK_REPO_NAME}"
-
-##########################################################
-
 # basic functions
 
 function cf() {
@@ -82,7 +73,7 @@ function activate_config() {
     if [ -f "$2" ]; then
         rm "$2"
     fi
-    ln "${DEFAULT_CONFIG_PATH}" "$2"
+    ln "${DEFAULT_CONFIG_PATH}" "$2" || cp "${DEFAULT_CONFIG_PATH}" "$2"
 }
 
 
@@ -153,7 +144,9 @@ BLACK_USER_CONFIG_PATH="${HOME}/.config/${BLACK_CONFIG_FILENAME}"
 
 activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
 
-activate_config "${BLACK_CONFIG_FILENAME}" "${WORK_REPO_PATH}/pyproject.toml" # Warning: this will overwrite the original file
+if [ ! -z "${WORK_REPO_PATH}" ]; then
+    activate_config "${BLACK_CONFIG_FILENAME}" "${WORK_REPO_PATH}/pyproject.toml" # Warning: this will overwrite the original file
+fi
 
 ##########################################################
 
@@ -261,12 +254,12 @@ alias nsp='nvidia-smi pmon -c 1 -s um'
 
 # aliases and functions for Conda
 function ca() {
-  conda activate $1
   ceiling="===== Conda Env: $1 ====="
   echo "$ceiling"
+  conda activate $1
   python_path=$(which python)
-  echo "$python_path"
-  python --version
+  echo "Current Python path: $python_path"
+  echo "Current Python version: $(python --version)"
 
   # base
   if [[ $python_path =~ 'envs' || $python_path =~ $1 ]]; then
@@ -277,7 +270,12 @@ function ca() {
   fi
 }
 
+alias ce='conda info --envs'
 alias cr='conda remove --all --yes --name'
+
+# echo "DEFAULT_CONDA_ENV=${DEFAULT_CONDA_ENV}"
+# ce
+ca "${DEFAULT_CONDA_ENV}"
 
 ##########################################################
 
@@ -298,5 +296,3 @@ alias wsl="wandb sync $WANDB_DIR/wandb/latest-run"
 ##########################################################
 
 unset IS_EXECUTING_ZSHRC
-
-ca "${DEFAULT_CONDA_ENV}"

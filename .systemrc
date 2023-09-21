@@ -1,22 +1,63 @@
-# system-dependent configs
+# should be run with `source` in ${DATA_ROOT}
 
-export DATA_ROOT='/data/users/zhangjunlei/tyx'
-DEFAULT_CONDA_ENV='open-instruct'
+# export DATA_ROOT="$(dirname $(realpath $0))" # cannot be use with `source`
+export DATA_ROOT=$(pwd)
 
-# export DATA_ROOT='/data/tongyx361'
-# DEFAULT_CONDA_ENV='nlp'
+# add shortcut
+shortcut="tyxrc"
+if ! alias "${shortcut}"; then
+  echo "[INFO] No shortcut exists. Adding to ~/.bashrc"
+  systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc"
+  alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
+  eval "${alias_shortcut_cmd}"
+  echo "${alias_shortcut_cmd}" >> ~/.bashrc
+fi
 
-# user-consistent configs
-
+# set user-consistent configs
 export GIT_AUTHOR_NAME="Shawn Yuxuan Tong"
 export GIT_AUTHOR_EMAIL="tongyuxuan361@gmail.com"
 
-# PROXY_PORT='6103'
-PROXY_PORT='4399'
+if ! git config --global user.email; then
+  git config --global user.email "${GIT_AUTHOR_EMAIL}"
+  echo "[WARNING] git config --global user.email ${GIT_AUTHOR_EMAIL}"
+fi
+
+if ! git config --global user.name; then
+  git config --global user.name "${GIT_AUTHOR_NAME}"
+  echo "[WARNING] git config --global user.name ${GIT_AUTHOR_NAME}"
+fi
+# system-dependent configs
+DEFAULT_CONFIG_DIRPATH="${DATA_ROOT}/dotfiles/.config"
+echo "[INFO] Reading system-dependent configs..."
+
+# Specify the path to the configuration file
+config_file="${DEFAULT_CONFIG_DIRPATH}/system.conf"
+
+# Check if the configuration file exists
+if [ ! -f "${config_file}" ]; then
+  echo "[WARNING] Configuration file '${config_file}' does not exist. Using the default config"
+  config_file="${DEFAULT_CONFIG_DIRPATH}/default-system.conf"
+fi
+# Read the configuration file line by line and extract configuration values
+while IFS= read -r line; do
+  # Ignore comment lines that start with #
+  if [[ "$line" =~ ^[^#]*= ]]; then
+    # Use the cut command to extract configuration parameter and value
+    config_param=$(echo "$line" | cut -d= -f1)
+    config_value=$(echo "$line" | cut -d= -f2)
+
+    # Output the configuration parameter and its corresponding value
+    echo "$config_param=$config_value"
+    # Set an environment variable with the same name as config_param
+    export "$config_param=$config_value"
+
+    # You can use the configuration value for other operations here
+  fi
+done < "${config_file}"
+
+WORK_REPO_PATH="${DATA_ROOT}/${WORK_REPO_NAME}"
 
 ##########################################################
-
-cd "${DATA_ROOT}"
 
 # dotfiles
 
@@ -28,7 +69,7 @@ if [ ! -d "${DOTFILES_REPO_DIR}" ]; then
   git clone https://github.com/tongyx361/dotfiles.git
 
   if [ $? -eq 0 ]; then
-    echo "[INFO] Cloning succeeded！"
+    echo "[INFO] Cloning succeeded!"
   else
     echo "[ERROR] Cloning failed, check network or permission settings."
     exit 1
@@ -40,6 +81,7 @@ fi
 # source other dotfiles
 
 cd "${DOTFILES_REPO_DIR}"
+
 cd dotfiles
 
 # echo "[DEBUG] Sourcing dotfiles..."
