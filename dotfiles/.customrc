@@ -100,9 +100,11 @@ alias rmcache='rm -rf ~/.cache'
 
 # aliases for jobs
 
-alias k1='kill -9 %1'
-alias d1='disown %1'
+alias kl='kill -9 $!'
+alias dl='disown $!'
 
+alias kj1='kill -9 %1'
+alias dj1='disown %1'
 
 ##########################################################
 
