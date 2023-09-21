@@ -55,7 +55,6 @@ while IFS= read -r line; do
   fi
 done < "${config_file}"
 
-WORK_REPO_PATH="${DATA_ROOT}/${WORK_REPO_NAME}"
 
 ##########################################################
 
