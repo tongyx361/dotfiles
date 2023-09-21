@@ -150,7 +150,7 @@ if [ ! -z "${WORK_REPO_NAME}" ]; then
     WORK_REPO_PATH="${DATA_ROOT}/${WORK_REPO_NAME}"
     project_black_config="${WORK_REPO_PATH}/pyproject.toml"
     echo "[WARNING] Overwriting ${project_black_config}..."
-    activate_config "${BLACK_CONFIG_FILENAME}"  # Warning: this will overwrite the original file
+    activate_config "${BLACK_CONFIG_FILENAME}" "${project_black_config}" # Warning: this will overwrite the original file
 fi
 
 ##########################################################
