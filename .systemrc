@@ -1,16 +1,24 @@
 # should be run with `source` in ${DATA_ROOT}
 
+# alias echo="if [ ${IS_EXECUTING_ZSHRC} -nq 1 ]; then echo; fi"
+
 # export DATA_ROOT="$(dirname $(realpath $0))" # cannot be use with `source`
 export DATA_ROOT=$(pwd)
 
 # add shortcut
 shortcut="tyxrc"
 if ! alias "${shortcut}"; then
-  echo "[INFO] No shortcut exists. Adding to ~/.bashrc"
-  systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc"
+  shell_name="$(basename ${SHELL})"
+  echo "[INFO] No shortcut exists. Adding to ~/.${shell_name}rc"
+  if [[ ${shell_name} == 'zsh' ]]; then
+    redirection='> /dev/null' #
+  else
+    redirection=''
+  fi
+  systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc ${redirection}"
   alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
   eval "${alias_shortcut_cmd}"
-  echo "\n${alias_shortcut_cmd}\n" >> ~/.bashrc
+  echo "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
 fi
 
 # set user-consistent configs
@@ -53,8 +61,7 @@ while IFS= read -r line; do
 
     # You can use the configuration value for other operations here
   fi
-done < "${config_file}"
-
+done <"${config_file}"
 
 ##########################################################
 
