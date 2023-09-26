@@ -56,4 +56,15 @@ for file in .*rc; do
   fi
 done
 
+if [[ ${shell_name} == 'zsh' ]]; then
+  # echo "[DEBUG] Sourcing zplugrc..."
+  cd zsh
+  for file in .*rc; do
+    if [ -f "$file" ]; then
+      echo "[INFO] Running $file..."
+      source "$file"
+    fi
+  done
+fi
+
 cd "${DATA_ROOT}"
