@@ -148,6 +148,7 @@ alias wnc='wget --no-check-certificate'
 # aliases for ps
 
 alias pp='ps -fl -p'
+alias pu="ps -fl -u ${USER}"
 alias pg='ps -aux | grep'
 
 # aliases for watch
