@@ -31,6 +31,9 @@ zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2
 # zplug "changyuheng/zsh-interactive-cd"
 # zplug "SleepyBag/zsh-confer"
 
+# zplug 'dracula/zsh', as:theme
+zplug 'romkatv/powerlevel10k', as:theme
+# $ZSH_THEME_STYLE="9k" # 9k not found?
 # zplug "Powerlevel9k/powerlevel9k", from:github, as:theme, if:"[[ $ZSH_THEME_STYLE == 9k ]]"
 # zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh-theme, from:github, as:theme, if:"[[ $ZSH_THEME_STYLE == spaceship ]]"
 # zplug "caiogondim/bullet-train.zsh", use:bullet-train.zsh-theme, from:github, as:theme, if:"[[ $ZSH_THEME_STYLE == bullet ]]"

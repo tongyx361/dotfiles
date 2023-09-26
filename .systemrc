@@ -1,5 +1,5 @@
 #! /bin/bash
-# should be run with `source` in ${DATA_ROOT}
+# should be run with `source` in ${DATA_ROOT} with desired shell
 # assumed to be run after ".${shell_name}rc"
 
 ##########################################################
@@ -7,8 +7,9 @@
 # shell selection
 
 shell_name="$(basename $0)"
-if [[ $(cat '/etc/shells' | grep -q 'zsh') || (${shell_name} != 'zsh') ]]; then
+if [[ $(cat '/etc/shells' | grep -q 'zsh') && (${shell_name} != 'zsh') ]]; then
   # if zsh exists and is not used
+  echo "[INFO] Using zsh..."
   zsh
 fi
 
