@@ -12,7 +12,8 @@ source "${zplug_root}/init.zsh"
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 zplug "zsh-users/zsh-autosuggestions", as:plugin
-zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2
+zplug "knu/z", use:z.sh, as:plugin defer:2
+zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:3
 
 # succeeded
 # zplug "plugins/git", from:oh-my-zsh, as:plugin
@@ -24,7 +25,6 @@ zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2
 # zplug "plugins/colored-man-pages", from:oh-my-zsh, as:plugin
 # zplug "plugins/sudo", from:oh-my-zsh, as:plugin
 
-# zplug "knu/z", use:z.sh, as:plugin defer:2
 # zplug "supercrabtree/k"
 # zplug "denisidoro/navi"
 # zplug "MichaelAquilina/zsh-you-should-use"
