@@ -6,7 +6,13 @@
 
 # shell selection
 
-shell_name="$(basename $0)"
+# shell_name="$(basename $0)" # sometimes wrong, being the script basename
+shell_name=$(basename "$(ps -p $$ -o comm=)")
+if ! cat '/etc/shells' | grep -q ${shell_name}; then
+  echo "[ERROR] Invalid Shell: ${shell_name}"
+fi
+
+echo "[INFO] Using Shell: ${shell_name}"
 if [[ $(cat '/etc/shells' | grep -q 'zsh') && (${shell_name} != 'zsh') ]]; then
   # if zsh exists and is not used
   echo "[INFO] Using zsh..."
