@@ -13,7 +13,9 @@ if ! cat '/etc/shells' | grep -q ${shell_name}; then
 fi
 
 echo "[INFO] Using Shell: ${shell_name}"
-if [[ $(cat '/etc/shells' | grep -q 'zsh') && (${shell_name} != 'zsh') ]]; then
+
+# TODO: how to check if a shell is used?
+if [[ (! $(cat '/etc/shells' | grep -q 'zsh')) && (${shell_name} != 'zsh') ]]; then
   # if zsh exists and is not used
   echo "[INFO] Using zsh..."
   zsh
