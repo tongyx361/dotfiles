@@ -1,19 +1,36 @@
 # Check if zplug is installed
-zplug_root="${DATA_ROOT}/.zplug"
-if [[ ! -d ${zplug_root} ]]; then
-    git clone https://github.com/zplug/zplug ${zplug_root}
+ZPLUG_HOME="${DATA_ROOT}/.zplug"
+export ZPLUG_HOME
+if [[ ! -d ${ZPLUG_HOME} ]]; then
+    git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
 fi
 
-source "${zplug_root}/init.zsh"
+source "${ZPLUG_HOME}/init.zsh"
+
+# Async for zsh, used by pure
+zplug "mafredri/zsh-async", from:github, defer:0
 
 # Add a bunch more of your favorite packages!
 # Make sure to use double quotes to prevent shell expansion
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
+zplug "lib/completion", from:oh-my-zsh
+zplug "lib/directories", from:oh-my-zsh
+zplug "lib/functions", from:oh-my-zsh
+zplug "lib/history", from:oh-my-zsh
+zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "plugins/command-not-found", from:oh-my-zsh
+
+zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions", as:plugin
 zplug "knu/z", use:z.sh, as:plugin, defer:2
-zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:3
+zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2.1
+zplug "zsh-users/zsh-history-substring-search", defer:2.2
+
+
+zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+# zplug "oddhorse/bubblegum-zsh", use:bubblegum.zsh-theme, as:theme
 
 # succeeded
 # zplug "plugins/git", from:oh-my-zsh, as:plugin
@@ -35,7 +52,8 @@ zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:3
 # zplug 'romkatv/powerlevel10k', as:theme
 # zplug "caiogondim/bullet-train.zsh", use:bullet-train.zsh-theme, from:github, as:theme
 # zplug "skylerlee/zeta-zsh-theme", from:github, as:theme
-zplug "themes/jonathan", from:oh-my-zsh, as:theme
+# zplug "themes/jonathan", from:oh-my-zsh, as:theme
+# zplug "themes/agnoster", from:oh-my-zsh, as:theme
 # $ZSH_THEME_STYLE="9k" # 9k not found?
 # $ZSH_THEME_STYLE="bullet"
 
