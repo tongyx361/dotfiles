@@ -34,7 +34,8 @@ zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:3
 # zplug 'dracula/zsh', as:theme
 # zplug 'romkatv/powerlevel10k', as:theme
 # zplug "caiogondim/bullet-train.zsh", use:bullet-train.zsh-theme, from:github, as:theme
-# zplug "themes/jonathan", from:oh-my-zsh, as:theme # Theme
+# zplug "skylerlee/zeta-zsh-theme", from:github, as:theme
+zplug "themes/jonathan", from:oh-my-zsh, as:theme
 # $ZSH_THEME_STYLE="9k" # 9k not found?
 # $ZSH_THEME_STYLE="bullet"
 
