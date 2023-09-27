@@ -20,13 +20,14 @@ zplug "lib/directories", from:oh-my-zsh
 zplug "lib/functions", from:oh-my-zsh
 zplug "lib/history", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "plugins/cp", from:oh-my-zsh, as:plugin
 zplug "plugins/command-not-found", from:oh-my-zsh
 
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions", as:plugin
 zplug "knu/z", use:z.sh, as:plugin, defer:2
-zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2.1
-zplug "zsh-users/zsh-history-substring-search", defer:2.2
+zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:3
+zplug "zsh-users/zsh-history-substring-search", defer:3
 
 
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
@@ -34,7 +35,7 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 # succeeded
 # zplug "plugins/git", from:oh-my-zsh, as:plugin
-# zplug "plugins/cp", from:oh-my-zsh, as:plugin
+
 
 # failed
 # zplug "plugins/gitignore", from:oh-my-zsh, as:plugin
