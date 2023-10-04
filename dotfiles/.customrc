@@ -369,7 +369,7 @@ ca "${DEFAULT_CONDA_ENV}"
 
 export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
 export WANDB_CONFIG_DIR="${DATA_ROOT}/.config/wandb"
-export WANDB_DIR="${DATA_ROOT}/wandb"
+# export WANDB_DIR="${DATA_ROOT}/wandb"
 
 # alias for wandb
 
