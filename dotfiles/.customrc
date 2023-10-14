@@ -361,7 +361,9 @@ alias cr='conda remove --all --yes --name'
 
 # echo "DEFAULT_CONDA_ENV=${DEFAULT_CONDA_ENV}"
 # ce
-ca "${DEFAULT_CONDA_ENV}"
+if conda --version; then
+    ca "${DEFAULT_CONDA_ENV}"
+fi
 
 ##########################################################
 
