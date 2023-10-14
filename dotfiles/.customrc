@@ -12,8 +12,16 @@ if ! alias "${shortcut}"; then
     systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc ${redirection}"
     alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
     eval "${alias_shortcut_cmd}"
-    echo "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
+    echo -e "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
 fi
+
+# mkdir
+
+DATA_CONFIG_HOME="$DATA_ROOT/.config"
+mkdir -p ${DATA_CONFIG_HOME}
+
+USER_CONFIG_HOME="${HOME}/.config"
+mkdir -p ${USER_CONFIG_HOME}
 
 ##########################################################
 
@@ -212,7 +220,7 @@ activate_config "${FLAKE8_CONFIG_FILENAME}" "${DATA_ROOT}/${FLAKE8_CONFIG_FILENA
 
 BLACK_CONFIG_FILENAME="black"
 
-BLACK_USER_CONFIG_PATH="${HOME}/.config/${BLACK_CONFIG_FILENAME}"
+BLACK_USER_CONFIG_PATH="$USER_CONFIG_HOME/${BLACK_CONFIG_FILENAME}"
 
 activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
 
@@ -340,19 +348,25 @@ alias nsp='nvidia-smi pmon -c 1 -s um'
 
 # aliases and functions for Conda
 function ca() {
-    ceiling="===== Conda Env: $1 ====="
+    conda_env_name=$1
+
+    if ! conda env list | grep -q -w "$conda_env_name"; then
+        echo "===== Conda Env $conda_env_name NOT FOUND ====="
+        return 1
+    fi
+
+    ceiling="===== Conda Env: $conda_env_name ====="
     echo "$ceiling"
-    conda activate $1
+    conda activate "$conda_env_name"
     python_path=$(which python)
     echo "Current Python path: $python_path"
     echo "Current Python version: $(python --version)"
 
     # base
-    if [[ $python_path =~ 'envs' || $python_path =~ $1 ]]; then
-        echo "===== YES!! It's $1 ====="
+    if [[ $python_path =~ 'envs' || $python_path =~ "$conda_env_name" ]]; then
+        echo "===== YES!! It's $conda_env_name ====="
     else
-        echo "===== NO!! Retry $1 ====="
-        ca $1
+        echo "===== NO!! Retry $conda_env_name ====="
     fi
 }
 
@@ -369,8 +383,11 @@ fi
 
 # environment variables for wandb
 
-export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
-export WANDB_CONFIG_DIR="${DATA_ROOT}/.config/wandb"
+# unavailable
+# export WANDB_CACHE_DIR="${DATA_ROOT}/.cache/wandb"
+# export WANDB_CONFIG_DIR="$DATA_CONFIG_HOME/wandb"
+
+# no need to coalesce
 # export WANDB_DIR="${DATA_ROOT}/wandb"
 
 # alias for wandb
