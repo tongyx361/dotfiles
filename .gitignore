@@ -1,2 +1,4 @@
 /dotfiles/.keysrc
 /.config/system.conf
+.userrc
+.localrc

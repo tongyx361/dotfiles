@@ -54,7 +54,13 @@ fi
 
 cd "${DOTFILES_REPO_DIR}"
 
+if [ -f "./.userrc" ]; then
+  echo "[INFO] Running .userrc..."
+  source "./.userrc"
+fi
+
 cd dotfiles
+
 
 # echo "[DEBUG] Sourcing dotfiles..."
 for file in .*rc; do
