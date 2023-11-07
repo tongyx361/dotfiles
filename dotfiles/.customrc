@@ -309,7 +309,8 @@ alias pi='pip install'
 
 function pypi() {
     sp
-    pip install "${1}" --index-url https://pypi.org/simple/
+    which pip
+    pip install "$1" --index-url https://pypi.org/simple/
 }
 
 ##########################################################
