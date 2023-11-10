@@ -76,6 +76,24 @@ done <"${config_file}"
 
 # basic functions
 
+function clean() {
+  if [ $# -eq 0 ]; then
+    local target_dir="."
+  else
+    local target_dir="$1"
+  fi
+
+  if [ ! -d "$target_dir" ]; then
+    echo "Error: '$target_dir' is not a directory."
+    echo "Usage: clean <directory>"
+    return 1
+  fi
+
+  find "$target_dir" -type f -name ".DS_Store" -delete
+
+  echo "Deleted all .DS_Store files under '$target_dir' and its subdirectories."
+}
+
 function delete_files_by_name() {
   if [ $# -ne 2 ]; then
     echo "Usage: delete_files_by_name <directory> <name>"
