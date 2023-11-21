@@ -34,6 +34,7 @@ export DATA_ROOT
 # dotfiles repo
 
 DOTFILES_REPO_DIR="${DATA_ROOT}/dotfiles"
+ln -s ${DOTFILES_REPO_DIR} ~/dotfiles
 
 # Check if the ${DOTFILES_REPO_DIR} folder exists
 if [ ! -d "${DOTFILES_REPO_DIR}" ]; then

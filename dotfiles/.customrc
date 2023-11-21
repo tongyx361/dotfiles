@@ -10,9 +10,7 @@ if ! alias "${shortcut}"; then
     else
         redirection=''
     fi
-    repo_dir="${DATA_ROOT}/repos"
-    mkdir "${repo_dir}"
-    systemrc_cmd="cd ${DATA_ROOT} && source ${repo_dir}/dotfiles/.systemrc ${redirection}"
+    systemrc_cmd="cd ${DATA_ROOT} && source ~/dotfiles/.systemrc ${redirection}"
     alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
     eval "${alias_shortcut_cmd}"
     echo -e "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
