@@ -2,6 +2,7 @@
 shortcut="tyxrc"
 if ! alias "${shortcut}"; then
     echo "[INFO] No shortcut exists. Adding to ~/.${shell_name}rc"
+
     # if using powerlevel10k, redirect output to /dev/null
     p10k_theme='powerlevel10k/powerlevel10k'
     if [[ ${shell_name} == 'zsh' && (${ZSH_THEME} == ${p10k_theme} || (${ZSH_THEME} == 'random' && ${RANDOM_THEME} == ${p10k_theme})) ]]; then
@@ -9,7 +10,9 @@ if ! alias "${shortcut}"; then
     else
         redirection=''
     fi
-    systemrc_cmd="cd ${DATA_ROOT} && source ./dotfiles/.systemrc ${redirection}"
+    repo_dir="${DATA_ROOT}/repos"
+    mkdir "${repo_dir}"
+    systemrc_cmd="cd ${DATA_ROOT} && source ${repo_dir}/dotfiles/.systemrc ${redirection}"
     alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
     eval "${alias_shortcut_cmd}"
     echo -e "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
