@@ -59,6 +59,8 @@ fi
 # Read the configuration file line by line and extract configuration values
 while IFS= read -r line; do
     # Ignore comment lines that start with #
+    # NOTE: won't read the last line if it doesn't end with a newline character
+    # echo "${line}" # debug
     if [[ "$line" =~ ^[^#]*= ]]; then
         # Use the cut command to extract configuration parameter and value
         config_param=$(echo "$line" | cut -d= -f1)
