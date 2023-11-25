@@ -66,10 +66,11 @@ while IFS= read -r line; do
         config_param=$(echo "$line" | cut -d= -f1)
         config_value=$(echo "$line" | cut -d= -f2)
 
+        config_cmd="export $config_param=$config_value"
         # Output the configuration parameter and its corresponding value
-        echo "$config_param=$config_value"
+        echo "${config_cmd}"
         # Set an environment variable with the same name as config_param
-        eval "$config_param=$config_value"
+        eval "${config_cmd}"
 
         # You can use the configuration value for other operations here
     fi
