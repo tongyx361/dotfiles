@@ -218,6 +218,12 @@ alias dl='disown $!'
 alias kj1='kill -9 %1'
 alias dj1='disown %1'
 
+# alias for nohup
+
+alias nh='nohup'
+alias np='nohup python'
+alias nb='nohup bash'
+
 ##########################################################
 
 # python
