@@ -190,10 +190,6 @@ function activate_config() {
 
 ##########################################################
 
-# aliases for jupyter nbconvert
-
-alias nb2py='jupyter nbconvert --to python --no-prompt --TagRemovePreprocessor.enabled=True --TagRemovePreprocessor.remove_cell_tags dev'
-
 # aliases for wget
 
 alias wnc='wget --no-check-certificate'
@@ -445,8 +441,22 @@ fi
 
 # alias for wandb
 
-alias wsl="wandb sync $WANDB_DIR/wandb/latest-run"
+alias wsl="wandb sync ${WANDB_DIR}/wandb/latest-run"
 
 # function ws(){
 
+# }
+
+# # jupyer nbconvert
+
+alias nb2py='jupyter nbconvert --to python --no-prompt --TagRemovePreprocessor.enabled=True --TagRemovePreprocessor.remove_cell_tags dev'
+
+# function nb2py() {
+#     src_nb="$1"
+
+#     jupyter nbconvert \
+#     --to python \
+#     --no-prompt \
+#     --TagRemovePreprocessor.enabled=True --TagRemovePreprocessor.remove_cell_tags dev \
+#     "${src_nb}"
 # }
