@@ -28,7 +28,7 @@ mkdir -p ${USER_CONFIG_HOME}
 
 # set user-consistent configs
 
-export GIT_AUTHOR_NAME="Shawn Yuxuan Tong"
+export GIT_AUTHOR_NAME="Shawn/Yuxuan Tong"
 export GIT_AUTHOR_EMAIL="tongyuxuan361@gmail.com"
 
 if ! git config --global user.email; then
