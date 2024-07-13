@@ -1,21 +1,21 @@
 #! /bin/bash
 # should be run with `source` in ${DATA_ROOT} with desired shell
-# assumed to be run after ".${shell_name}rc"
+# assumed to be run after ".${SH_NAME}rc"
 
 ##########################################################
 
 # shell selection
 
-# shell_name="$(basename $0)" # sometimes wrong, being the script basename
-shell_name=$(basename "$(ps -p $$ -o comm=)")
-if ! cat '/etc/shells' | grep -q ${shell_name}; then
-  echo "[ERROR] Invalid Shell Name: ${shell_name}"
+# SH_NAME="$(basename $0)" # sometimes wrong, being the script basename
+export SH_NAME=$(basename "$(ps -p $$ -o comm=)")
+if ! cat '/etc/shells' | grep -q ${SH_NAME}; then
+  echo "[ERROR] Invalid Shell Name: ${SH_NAME}"
 fi
 
-echo "[INFO] Using Shell: ${shell_name}"
+echo "[INFO] Using Shell: ${SH_NAME}"
 
 # TODO: how to check if a shell is used?
-# if [[ (! $(cat '/etc/shells' | grep -q 'zsh')) && (${shell_name} != 'zsh') ]]; then
+# if [[ (! $(cat '/etc/shells' | grep -q 'zsh')) && (${SH_NAME} != 'zsh') ]]; then
 #   # if zsh exists and is not used
 #   echo "[INFO] Using zsh..."
 #   zsh
@@ -71,7 +71,7 @@ for file in .*rc; do
   fi
 done
 
-if [[ ${shell_name} == 'zsh' ]]; then
+if [[ ${SH_NAME} == 'zsh' ]]; then
   # echo "[DEBUG] Sourcing zplugrc..."
   cd zsh
   for file in .*rc; do

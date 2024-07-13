@@ -1,28 +1,41 @@
+# https://docs.anaconda.com/miniconda/#quick-command-line-install
+miniconda_root="${DATA_ROOT}/miniconda3"
+if [ ! -d "${miniconda_root}" ]; then
+    echo "Creating Miniconda3 at ${miniconda_root}"
+    mkdir -p "${miniconda_root}"
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O "${miniconda_root}/miniconda.sh"
+    bash "${miniconda_root}/miniconda.sh" -b -u -p "${miniconda_root}"
+    rm -rf "${miniconda_root}/miniconda.sh"
+
+    ${miniconda_root}/bin/conda init bash
+    ${miniconda_root}/bin/conda init zsh
+fi
+
 # add shortcut
 shortcut="tyxrc"
 if ! alias "${shortcut}"; then
-    echo "[INFO] No shortcut exists. Adding to ~/.${shell_name}rc"
+    echo "[INFO] No shortcut exists. Adding to ${HOME}/.${SH_NAME}rc"
 
     # if using powerlevel10k, redirect output to /dev/null
     p10k_theme='powerlevel10k/powerlevel10k'
-    if [[ ${shell_name} == 'zsh' && (${ZSH_THEME} == ${p10k_theme} || (${ZSH_THEME} == 'random' && ${RANDOM_THEME} == ${p10k_theme})) ]]; then
-        redirection='> /dev/null'
+    if [[ ${SH_NAME} == 'zsh' && (${ZSH_THEME} == "${p10k_theme}" || (${ZSH_THEME} == 'random' && ${RANDOM_THEME} == ${p10k_theme})) ]]; then
+        redirection=' > /dev/null'
     else
         redirection=''
     fi
-    systemrc_cmd="cd ${DATA_ROOT} && source ~/dotfiles/.systemrc ${redirection}"
+    systemrc_cmd="cd ${DATA_ROOT} && source ~/dotfiles/.systemrc${redirection}"
     alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
     eval "${alias_shortcut_cmd}"
-    echo -e "\n${alias_shortcut_cmd}\n" >>~/.${shell_name}rc
+    echo -e "\n${alias_shortcut_cmd}\n${shortcut}" >>"${HOME}/.${SH_NAME}rc"
 fi
 
 # mkdir
 
 DATA_CONFIG_HOME="$DATA_ROOT/.config"
-mkdir -p ${DATA_CONFIG_HOME}
+mkdir -p "${DATA_CONFIG_HOME}"
 
 USER_CONFIG_HOME="${HOME}/.config"
-mkdir -p ${USER_CONFIG_HOME}
+mkdir -p "${USER_CONFIG_HOME}"
 
 ##########################################################
 
@@ -81,41 +94,40 @@ done <"${config_file}"
 # basic functions
 
 function clean() {
-  if [ $# -eq 0 ]; then
-    local target_dir="."
-  else
-    local target_dir="$1"
-  fi
+    if [ $# -eq 0 ]; then
+        local target_dir="."
+    else
+        local target_dir="$1"
+    fi
 
-  if [ ! -d "$target_dir" ]; then
-    echo "Error: '$target_dir' is not a directory."
-    echo "Usage: clean <directory>"
-    return 1
-  fi
+    if [ ! -d "$target_dir" ]; then
+        echo "Error: '$target_dir' is not a directory."
+        echo "Usage: clean <directory>"
+        return 1
+    fi
 
-  find "$target_dir" -type f -name ".DS_Store" -delete
+    find "$target_dir" -type f -name ".DS_Store" -delete
 
-  echo "Deleted all .DS_Store files under '$target_dir' and its subdirectories."
+    echo "Deleted all .DS_Store files under '$target_dir' and its subdirectories."
 }
 
 function delete_files_by_name() {
-  if [ $# -ne 2 ]; then
-    echo "Usage: delete_files_by_name <directory> <name>"
-    return 1
-  fi
+    if [ $# -ne 2 ]; then
+        echo "Usage: delete_files_by_name <directory> <name>"
+        return 1
+    fi
 
-  local directory="$1"
-  local name="$2"
+    local directory="$1"
+    local name="$2"
 
-  if [ ! -d "$directory" ]; then
-    echo "Error: Directory '$directory' does not exist."
-    return 1
-  fi
+    if [ ! -d "$directory" ]; then
+        echo "Error: Directory '$directory' does not exist."
+        return 1
+    fi
 
-  find "$directory" -type f -name "$name" -exec rm -f {} \;
-  echo "Deleted all files named '$name' in '$directory' and its subdirectories."
+    find "$directory" -type f -name "$name" -exec rm -f {} \;
+    echo "Deleted all files named '$name' in '$directory' and its subdirectories."
 }
-
 
 function cf() {
     ls $1 | wc -l
