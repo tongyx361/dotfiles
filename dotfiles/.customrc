@@ -433,12 +433,6 @@ function ca() {
 alias ce='conda info --envs'
 alias cr='conda remove --all --yes --name'
 
-# echo "DEFAULT_CONDA_ENV=${DEFAULT_CONDA_ENV}"
-# ce
-if conda --version; then
-    ca "${DEFAULT_CONDA_ENV}"
-fi
-
 ##########################################################
 
 # environment variables for wandb
@@ -472,6 +466,10 @@ alias nb2py='jupyter nbconvert --to python --no-prompt --TagRemovePreprocessor.e
 #     "${src_nb}"
 # }
 
+if [ -n "${DEFAULT_CONDA_ENV}" ]; then
+    ca "${DEFAULT_CONDA_ENV}"
+fi
+
 if [ -n "${WORK_REPO_PATH}" ]; then
-    cd "${WORK_REPO_PATH}" && ca "${DEFAULT_CONDA_ENV}"
+    cd "${WORK_REPO_PATH}" || cd "${DATA_ROOT}" || return 1
 fi

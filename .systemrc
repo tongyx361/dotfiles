@@ -27,6 +27,7 @@ echo "[INFO] Using Shell: ${SH_NAME}"
 
 # export DATA_ROOT="$(dirname $(realpath $0))" # cannot be use with `source`
 DATA_ROOT=$(pwd)
+echo "[INFO] DATA_ROOT: ${DATA_ROOT}"
 export DATA_ROOT
 
 ##########################################################
@@ -34,6 +35,7 @@ export DATA_ROOT
 # dotfiles repo
 
 DOTFILES_REPO_DIR="${DATA_ROOT}/dotfiles"
+echo "[INFO] DOTFILES_REPO_DIR: ${DOTFILES_REPO_DIR}"
 ln -s ${DOTFILES_REPO_DIR} ~/dotfiles
 
 # Check if the ${DOTFILES_REPO_DIR} folder exists
@@ -62,15 +64,6 @@ fi
 
 cd dotfiles
 
-
-# echo "[DEBUG] Sourcing dotfiles..."
-for file in .*rc; do
-  if [ -f "$file" ]; then
-    echo "[INFO] Running $file..."
-    source "$file"
-  fi
-done
-
 if [[ ${SH_NAME} == 'zsh' ]]; then
   # echo "[DEBUG] Sourcing zplugrc..."
   cd zsh
@@ -80,6 +73,13 @@ if [[ ${SH_NAME} == 'zsh' ]]; then
       source "$file"
     fi
   done
+  cd ..
 fi
 
-cd "${DATA_ROOT}"
+# echo "[DEBUG] Sourcing dotfiles..."
+for file in .*rc; do
+  if [ -f "$file" ]; then
+    echo "[INFO] Running $file..."
+    source "$file"
+  fi
+done
