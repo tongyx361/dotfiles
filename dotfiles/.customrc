@@ -471,3 +471,7 @@ alias nb2py='jupyter nbconvert --to python --no-prompt --TagRemovePreprocessor.e
 #     --TagRemovePreprocessor.enabled=True --TagRemovePreprocessor.remove_cell_tags dev \
 #     "${src_nb}"
 # }
+
+if [ -n "${WORK_REPO_PATH}" ]; then
+    cd "${WORK_REPO_PATH}" && ca "${DEFAULT_CONDA_ENV}"
+fi
