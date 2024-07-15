@@ -284,11 +284,11 @@ BLACK_USER_CONFIG_PATH="$USER_CONFIG_HOME/${BLACK_CONFIG_FILENAME}"
 
 activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
 
-if [ -n "${WORK_REPO_PATH}" ]; then
-    project_black_config="${WORK_REPO_PATH}/pyproject.toml"
-    echo "[WARNING] Overwriting ${project_black_config}..."
-    activate_config "${BLACK_CONFIG_FILENAME}" "${project_black_config}" # Warning: this will overwrite the original file
-fi
+# if [ -n "${WORK_REPO_PATH}" ]; then
+#     project_black_config="${WORK_REPO_PATH}/pyproject.toml"
+#     echo "[WARNING] Overwriting ${project_black_config}..."
+#     activate_config "${BLACK_CONFIG_FILENAME}" "${project_black_config}" # Warning: this will overwrite the original file
+# fi
 
 ##########################################################
 
