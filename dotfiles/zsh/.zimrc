@@ -9,6 +9,10 @@ if [ ! -f "${HOME}/.zimrc" ]; then
             sed -i "1s;^;zmodule ${module}\n;" "${HOME}/.zimrc"
         fi
     done
+    # Add spaceship prompt
+    if ! grep -q "spaceship-prompt/spaceship-prompt" "${HOME}/.zimrc"; then
+        sed -i "1s;^;zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules\n;" "${HOME}/.zimrc"
+    fi
     echo "Installed zimfw and plugins... Restart your terminal to apply changes."
     exit
 fi
