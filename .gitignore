@@ -1,4 +1,3 @@
-/dotfiles/.keysrc
 /.config/system.conf
-.userrc
-.localrc
+/dotfiles/.*rc
+!/dotfilts/.customrc

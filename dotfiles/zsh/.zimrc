@@ -1,0 +1,21 @@
+#! /bin/bash
+if [ ! -f "${HOME}/.zimrc" ]; then
+    wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+    # https://zimfw.sh/docs/modules
+    zim_modules=(run-help archive asdf magic-enter ssh joke/zim-github-cli kiesman99/zim-zoxide)
+    for module in "${zim_modules[@]}"; do
+        if ! grep -q "${module}" "${HOME}/.zimrc"; then
+            # Append to the beginning of the file
+            sed -i "1s;^;zmodule ${module}\n;" "${HOME}/.zimrc"
+        fi
+    done
+    echo "Installed zimfw and plugins... Restart your terminal to apply changes."
+    exit
+fi
+
+asdf_plugins=(github-cli yq zoxide)
+for plugin in "${asdf_plugins[@]}"; do
+    if ! asdf plugin list | grep -q "${plugin}"; then
+        asdf plugin add "${plugin}" && asdf install "${plugin}" latest && asdf global "${plugin}" latest
+    fi
+done

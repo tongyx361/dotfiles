@@ -1,7 +1,13 @@
+#! /bin/bash
+
+#
+# Install miniconda3
 # https://docs.anaconda.com/miniconda/#quick-command-line-install
+#
+
 miniconda_root="${DATA_ROOT}/miniconda3"
 if [ ! -d "${miniconda_root}" ]; then
-    echo "Creating Miniconda3 at ${miniconda_root}"
+    echo "Installing miniconda3 at ${miniconda_root}"
     mkdir -p "${miniconda_root}"
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O "${miniconda_root}/miniconda.sh"
     bash "${miniconda_root}/miniconda.sh" -b -u -p "${miniconda_root}"
@@ -11,25 +17,30 @@ if [ ! -d "${miniconda_root}" ]; then
     ${miniconda_root}/bin/conda init zsh
 fi
 
-# add shortcut
+#
+# Add shortcut to systemrc
+#
+
 shortcut="tyxrc"
 if ! alias "${shortcut}"; then
     echo "[INFO] No shortcut exists. Adding to ${HOME}/.${SH_NAME}rc"
 
     # if using powerlevel10k, redirect output to /dev/null
     p10k_theme='powerlevel10k/powerlevel10k'
-    if [[ ${SH_NAME} == 'zsh' && (${ZSH_THEME} == "${p10k_theme}" || (${ZSH_THEME} == 'random' && ${RANDOM_THEME} == ${p10k_theme})) ]]; then
+    if [[ "${SH_NAME}" == 'zsh' && ("${ZSH_THEME}" == "${p10k_theme}" || ("${ZSH_THEME}" == 'random' && "${RANDOM_THEME}" == "${p10k_theme}")) ]]; then
         redirection=' > /dev/null'
     else
         redirection=''
     fi
-    systemrc_cmd="cd ${DATA_ROOT} && source ~/dotfiles/.systemrc${redirection}"
+    systemrc_cmd="cd ${DATA_ROOT} && source ${HOME}/dotfiles/.systemrc${redirection}"
     alias_shortcut_cmd="alias ${shortcut}='${systemrc_cmd}'"
     eval "${alias_shortcut_cmd}"
     echo -e "\n${alias_shortcut_cmd}\n${shortcut}" >>"${HOME}/.${SH_NAME}rc"
 fi
 
+#
 # mkdir
+#
 
 DATA_CONFIG_HOME="$DATA_ROOT/.config"
 mkdir -p "${DATA_CONFIG_HOME}"
@@ -37,9 +48,9 @@ mkdir -p "${DATA_CONFIG_HOME}"
 USER_CONFIG_HOME="${HOME}/.config"
 mkdir -p "${USER_CONFIG_HOME}"
 
-##########################################################
-
-# set user-consistent configs
+#
+# User-consistent configs
+#
 
 export GIT_AUTHOR_NAME="Shawn/Yuxuan Tong"
 export GIT_AUTHOR_EMAIL="tongyuxuan361@gmail.com"
@@ -54,12 +65,12 @@ if ! git config --global user.name; then
     echo "[WARNING] git config --global user.name ${GIT_AUTHOR_NAME}"
 fi
 
-##########################################################
-
+#
 # system-dependent configs
+#
 
 DEFAULT_CONFIG_DIRPATH="${DATA_ROOT}/dotfiles/.config"
-echo "[INFO] Reading system-dependent configs..."
+echo "[INFO] Reading system-dependent configs from ${DEFAULT_CONFIG_DIRPATH}"
 
 # Specify the path to the configuration file
 config_file="${DEFAULT_CONFIG_DIRPATH}/system.conf"
@@ -89,9 +100,9 @@ while IFS= read -r line; do
     fi
 done <"${config_file}"
 
-##########################################################
-
+#
 # basic functions
+#
 
 function clean() {
     if [ $# -eq 0 ]; then
@@ -186,7 +197,7 @@ if [ "${PROXY_PORT}" ]; then
     sp
 fi
 
-# # config
+# config
 
 function activate_config() {
     # $1: default config file name
@@ -200,7 +211,9 @@ function activate_config() {
     ln "${DEFAULT_CONFIG_PATH}" "$2" || cp "${DEFAULT_CONFIG_PATH}" "$2"
 }
 
-##########################################################
+#
+# Aliases
+#
 
 # aliases for wget
 
@@ -236,21 +249,13 @@ alias nh='nohup'
 alias np='nohup python'
 alias nb='nohup bash'
 
-##########################################################
-
-# python
-
 # pip
 
 alias pip='python -m pip'
 
-##########################################################
-
 # network
 
 alias test-google="curl -I www.google.com"
-
-##########################################################
 
 # clash
 
@@ -262,21 +267,13 @@ function select-proxy() {
     curl -X PUT -H "Content-Type: application/json" -d "{\"name\":\"$1\"}" "127.0.0.1:7777/proxies/一元机场"
 }
 
-##########################################################
-
 # flake8
-
-# # config
 
 FLAKE8_CONFIG_FILENAME=".flake8"
 
 activate_config "${FLAKE8_CONFIG_FILENAME}" "${DATA_ROOT}/${FLAKE8_CONFIG_FILENAME}"
 
-##########################################################
-
 # black
-
-# # config
 
 BLACK_CONFIG_FILENAME="black"
 
@@ -289,8 +286,6 @@ activate_config "${BLACK_CONFIG_FILENAME}" "${BLACK_USER_CONFIG_PATH}"
 #     echo "[WARNING] Overwriting ${project_black_config}..."
 #     activate_config "${BLACK_CONFIG_FILENAME}" "${project_black_config}" # Warning: this will overwrite the original file
 # fi
-
-##########################################################
 
 # alias for nvidia-smi
 
@@ -308,13 +303,9 @@ function psnsci() {
     ps -fl -p $(nvidia-smi --query-compute-apps=pid --format=csv,noheader -i "$1")
 }
 
-##########################################################
-
 # environment variables for HuggingFace
 
 export HF_HOME="${DATA_ROOT}/.cache/huggingface"
-
-##########################################################
 
 # environment variables for pip(3)
 
@@ -352,8 +343,6 @@ function pypi() {
     pip install "$1" --index-url https://pypi.org/simple/
 }
 
-##########################################################
-
 # git config
 git config --global alias.lol "log --graph --oneline --decorate --color --all"
 git config --global alias.rh "reset --hard"
@@ -386,8 +375,6 @@ function gamend() {
     fi
 }
 
-##########################################################
-
 # aliases for CUDA
 
 # functions for CUDA
@@ -398,13 +385,9 @@ function cvdc() {
     eval "${command}"
 }
 
-##########################################################
-
 # aliases for nvidia-smi
 alias ns='nvidia-smi'
 alias nsp='nvidia-smi pmon -c 1 -s um'
-
-##########################################################
 
 # aliases and functions for Conda
 function ca() {
@@ -432,8 +415,6 @@ function ca() {
 
 alias ce='conda info --envs'
 alias cr='conda remove --all --yes --name'
-
-##########################################################
 
 # environment variables for wandb
 
@@ -465,11 +446,3 @@ alias nb2py='jupyter nbconvert --to python --no-prompt --TagRemovePreprocessor.e
 #     --TagRemovePreprocessor.enabled=True --TagRemovePreprocessor.remove_cell_tags dev \
 #     "${src_nb}"
 # }
-
-if [ -n "${DEFAULT_CONDA_ENV}" ]; then
-    ca "${DEFAULT_CONDA_ENV}"
-fi
-
-if [ -n "${WORK_REPO_PATH}" ]; then
-    cd "${WORK_REPO_PATH}" || cd "${DATA_ROOT}" || return 1
-fi

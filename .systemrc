@@ -7,12 +7,12 @@
 # shell selection
 
 # SH_NAME="$(basename $0)" # sometimes wrong, being the script basename
-export SH_NAME=$(basename "$(ps -p $$ -o comm=)")
-if ! cat '/etc/shells' | grep -q ${SH_NAME}; then
+SH_NAME=$(basename "$(ps -p $$ -o comm=)")
+export SH_NAME
+if ! grep -q "${SH_NAME}" <'/etc/shells'; then
   echo "[ERROR] Invalid Shell Name: ${SH_NAME}"
 fi
-
-echo "[INFO] Using Shell: ${SH_NAME}"
+# echo "[INFO] Using Shell: ${SH_NAME}"
 
 # TODO: how to check if a shell is used?
 # if [[ (! $(cat '/etc/shells' | grep -q 'zsh')) && (${SH_NAME} != 'zsh') ]]; then
@@ -27,59 +27,61 @@ echo "[INFO] Using Shell: ${SH_NAME}"
 
 # export DATA_ROOT="$(dirname $(realpath $0))" # cannot be use with `source`
 DATA_ROOT=$(pwd)
-echo "[INFO] DATA_ROOT: ${DATA_ROOT}"
 export DATA_ROOT
+# echo "[INFO] DATA_ROOT: ${DATA_ROOT}"
 
 ##########################################################
 
 # dotfiles repo
 
-DOTFILES_REPO_DIR="${DATA_ROOT}/dotfiles"
-echo "[INFO] DOTFILES_REPO_DIR: ${DOTFILES_REPO_DIR}"
-ln -s ${DOTFILES_REPO_DIR} ~/dotfiles
+dotfiles_repo_dir="${DATA_ROOT}/dotfiles"
+# echo "[INFO] dotfiles_repo_dir: ${dotfiles_repo_dir}"
 
-# Check if the ${DOTFILES_REPO_DIR} folder exists
-if [ ! -d "${DOTFILES_REPO_DIR}" ]; then
-  echo "[WARNING] Folder ${DOTFILES_REPO_DIR} not found."
-  git clone https://github.com/tongyx361/dotfiles.git
+# Check if the ${dotfiles_repo_dir} folder exists
+if [ ! -d "${dotfiles_repo_dir}" ]; then
+  echo "[WARNING] Folder ${dotfiles_repo_dir} not found."
 
-  if [ $? -eq 0 ]; then
+  if git clone https://github.com/tongyx361/dotfiles.git; then
     echo "[INFO] Cloning succeeded!"
   else
     echo "[ERROR] Cloning failed, check network or permission settings."
     exit 1
   fi
-else
-  echo "[INFO] ${DOTFILES_REPO_DIR} existed."
 fi
+
+ln -s "${dotfiles_repo_dir}" ~/dotfiles
 
 # source other dotfiles
 
-cd "${DOTFILES_REPO_DIR}"
+cd "${dotfiles_repo_dir}" || return
 
-if [ -f "./.userrc" ]; then
-  echo "[INFO] Running .userrc..."
-  source "./.userrc"
-fi
-
-cd dotfiles
+cd dotfiles || return
 
 if [[ ${SH_NAME} == 'zsh' ]]; then
-  # echo "[DEBUG] Sourcing zplugrc..."
-  cd zsh
-  for file in .*rc; do
-    if [ -f "$file" ]; then
-      echo "[INFO] Running $file..."
-      source "$file"
-    fi
-  done
-  cd ..
+  ( # Subshell to avoid changing the current shell
+    cd zsh || exit
+    for file in .*rc; do
+      if [ -f "${file}" ]; then
+        echo "[INFO] Running $(realpath "${file}")..."
+        source "${file}"
+      fi
+    done
+  )
 fi
 
-# echo "[DEBUG] Sourcing dotfiles..."
+echo "[INFO] Sourcing dotfiles under $(pwd)"
+
 for file in .*rc; do
-  if [ -f "$file" ]; then
-    echo "[INFO] Running $file..."
-    source "$file"
+  if [ -f "${file}" ]; then
+    echo "[INFO] Running $(realpath "${file}")..."
+    source "${file}"
   fi
 done
+
+if [ -n "${DEFAULT_CONDA_ENV}" ]; then
+  ca "${DEFAULT_CONDA_ENV}"
+fi
+
+if [ -n "${WORK_REPO_PATH}" ]; then
+  cd "${WORK_REPO_PATH}" || cd "${DATA_ROOT}" || return 1
+fi
