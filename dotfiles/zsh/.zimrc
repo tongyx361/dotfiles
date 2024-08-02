@@ -4,9 +4,10 @@ if [ ! -f "${HOME}/.zimrc" ]; then
 
     # Add zimfw modules from https://zimfw.sh/docs/modules
     zim_modules=(
-        run-help archive asdf magic-enter ssh joke/zim-github-cli kiesman99/zim-zoxide
+        run-help archive asdf magic-enter ssh joke/zim-github-cli
         'spaceship-prompt/spaceship-prompt --name spaceship --no-submodules'
     )
+    # kiesman99/zim-zoxide seems useless
     for module in "${zim_modules[@]}"; do
         if ! grep -q "${module}" "${HOME}/.zimrc"; then
             # Append to the beginning of the file
@@ -18,7 +19,7 @@ if [ ! -f "${HOME}/.zimrc" ]; then
     exit
 fi
 
-asdf_plugins=(github-cli yq zoxide)
+asdf_plugins=(github-cli yq zoxide fzf)
 for plugin in "${asdf_plugins[@]}"; do
     if ! asdf plugin list | grep -q "${plugin}"; then
         asdf plugin add "${plugin}" && asdf install "${plugin}" latest && asdf global "${plugin}" latest
