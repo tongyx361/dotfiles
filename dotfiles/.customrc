@@ -6,6 +6,13 @@
 #
 
 miniconda_root="${DATA_ROOT}/miniconda3"
+new_channels=(
+    conda-forge
+    nvidia
+    pytorch
+    huggingface
+    fastai
+) # from default to specific/prioritized
 if [ ! -d "${miniconda_root}" ]; then
     echo "Installing miniconda3 at ${miniconda_root}"
     mkdir -p "${miniconda_root}"
@@ -13,8 +20,15 @@ if [ ! -d "${miniconda_root}" ]; then
     bash "${miniconda_root}/miniconda.sh" -b -u -p "${miniconda_root}"
     rm -rf "${miniconda_root}/miniconda.sh"
 
-    ${miniconda_root}/bin/conda init bash
-    ${miniconda_root}/bin/conda init zsh
+    __conda_setup="$("${miniconda_root}/bin/conda" 'shell.bash' 'hook' 2>/dev/null)"
+    eval "$__conda_setup"
+
+    conda init bash
+    conda init zsh
+
+    for channel in "${new_channels[@]}"; do
+        conda config --add channels "$channel"
+    done
 fi
 
 #
