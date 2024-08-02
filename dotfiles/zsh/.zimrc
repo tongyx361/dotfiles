@@ -24,4 +24,7 @@ for plugin in "${asdf_plugins[@]}"; do
         asdf plugin add "${plugin}" && asdf install "${plugin}" latest && asdf global "${plugin}" latest
     fi
 done
-eval "$(zoxide init zsh)"
+zoxide_init_cmd='eval "$(zoxide init zsh)"'
+if ! grep -q "${zoxide_init_cmd}" "${HOME}/.zshrc"; then
+    echo "${zoxide_init_cmd}" >>"${HOME}/.zshrc"
+fi
