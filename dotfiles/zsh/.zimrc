@@ -24,3 +24,4 @@ for plugin in "${asdf_plugins[@]}"; do
         asdf plugin add "${plugin}" && asdf install "${plugin}" latest && asdf global "${plugin}" latest
     fi
 done
+eval "$(zoxide init zsh)"
