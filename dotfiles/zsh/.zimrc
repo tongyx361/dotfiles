@@ -1,5 +1,10 @@
-#! /bin/bash
-if [ ! -f "${HOME}/.zimrc" ]; then
+#!/usr/bin/env bash
+
+# c.f. https://zimfw.sh/docs/install/
+export ZDOTDIR="${ZDOTDIR:-${HOME}}"           # Home to zsh
+export ZIM_HOME="${ZIM_HOME:-${ZDOTDIR}/.zim}" # Home to zimfw
+
+if [ ! -f "${ZIM_HOME}/init.zsh" ]; then
     wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
     # Add zimfw modules from https://zimfw.sh/docs/modules
@@ -9,9 +14,9 @@ if [ ! -f "${HOME}/.zimrc" ]; then
     )
     # kiesman99/zim-zoxide seems useless
     for module in "${zim_modules[@]}"; do
-        if ! grep -q "${module}" "${HOME}/.zimrc"; then
+        if ! grep -q "${module}" "${ZDOTDIR}/.zimrc"; then
             # Append to the beginning of the file
-            sed -i "1s;^;zmodule ${module}\n;" "${HOME}/.zimrc"
+            sed -i "1s;^;zmodule ${module}\n;" "${ZDOTDIR}/.zimrc"
         fi
     done
 
@@ -26,6 +31,6 @@ for plugin in "${asdf_plugins[@]}"; do
     fi
 done
 zoxide_init_cmd='eval "$(zoxide init zsh)"'
-if ! grep -q "${zoxide_init_cmd}" "${HOME}/.zshrc"; then
-    echo "${zoxide_init_cmd}" >>"${HOME}/.zshrc"
+if ! grep -q "${zoxide_init_cmd}" "${ZDOTDIR}/.zshrc"; then
+    echo "${zoxide_init_cmd}" >>"${ZDOTDIR}/.zshrc"
 fi

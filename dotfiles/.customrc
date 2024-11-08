@@ -1,5 +1,17 @@
 #! /bin/bash
-export PATH=$HOME/.local/bin:$PATH
+
+# Function to safely add directory to PATH if it exists and isn't already included
+function add_to_path() {
+    local dir="$1"
+    if [ -d "$dir" ] && [[ ":$PATH:" != *":$dir:"* ]]; then
+        export PATH="$dir:$PATH"
+        echo "Added to PATH: $dir"
+    fi
+}
+
+# Add directories to PATH
+add_to_path "$HOME/.local/bin"
+add_to_path "$HOME/texlive/2024/bin/x86_64-linux"
 #
 # Install miniconda3
 # https://docs.anaconda.com/miniconda/#quick-command-line-install
