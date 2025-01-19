@@ -7,6 +7,8 @@ export ZIM_HOME="${ZIM_HOME:-${ZDOTDIR}/.zim}" # Home to zimfw
 if [ ! -f "${ZIM_HOME}/init.zsh" ]; then
     wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
+    echo "skip_global_compinit=1" >> "${ZDOTDIR}/.zshenv"
+
     # Add zimfw modules from https://zimfw.sh/docs/modules
     zim_modules=(
         run-help archive asdf magic-enter ssh joke/zim-github-cli
